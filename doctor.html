@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Outpatient Appointment System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1,
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    #doctor-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    #doctor-list li {
+      margin: 10px;
+      padding: 10px;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #appointment-form {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    select,
+    input[type="text"],
+    input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    button[type="submit"] {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    #appointment-confirmation {
+      text-align: center;
+      display: none;
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #4caf50;
+      color: #fff;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Outpatient Appointment System</h1>
+
+  <!-- Doctors Listing -->
+  <h2>Doctors Listing</h2>
+  <ul id="doctor-list">
+    <li><a href="#" data-doctor-id="1">Dr. Smith (Cardiologist)</a></li>
+    <li><a href="#" data-doctor-id="2">Dr. Johnson (Dermatologist)</a></li>
+  </ul>
+
+  <!-- Doctor Detail Page -->
+  <h2>Doctor Details</h2>
+  <div id="doctor-detail">
+    <p id="doctor-name"></p>
+    <p id="doctor-specialty"></p>
+  </div>
+
+  <!-- Appointment Booking Form -->
+  <h2>Book an Appointment</h2>
+  <form id="appointment-form">
+    <label for="doctor-id">Doctor:</label>
+    <select id="doctor-id" name="doctor-id">
+      <option value="1">Dr. Smith (Cardiologist)</option>
+      <option value="2">Dr. Johnson (Dermatologist)</option>
+    </select><br>
+
+    <label for="appointment-date">Appointment Date:</label>
+    <input type="date" id="appointment-date" name="appointment-date" min="2023-10-01"><br>
+
+    <label for="appointment-time">Appointment Time:</label>
+    <input type="time" id="appointment-time" name="appointment-time"><br>
+
+    <label for="patient-name">Your Name:</label>
+    <input type="text" id="patient-name" name="patient-name" placeholder="Your Name"><br>
+
+    <button type="submit">Book Appointment</button>
+  </form>
+
+  <!-- Appointment Confirmation -->
+  <div id="appointment-confirmation">
+    <p>Appointment booked successfully!</p>
+  </div>
+
+  <script>
+    document.getElementById("doctor-list").addEventListener("click", function (event) {
+      if (event.target.tagName === "A") {
+        const doctorId = event.target.getAttribute("data-doctor-id");
+        const doctor = getDoctorById(doctorId);
+        if (doctor) {
+          showDoctorDetails(doctor);
+        }
+      }
+    });
+
+    document.getElementById("appointment-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const doctorId = formData.get("doctor-id");
+      const appointmentDate = formData.get("appointment-date");
+      const appointmentTime = formData.get("appointment-time");
+      const patientName = formData.get("patient-name");
+      // Implement appointment booking logic here and show confirmation
+      showAppointmentConfirmation(patientName, appointmentDate, appointmentTime);
+    });
+
+    function getDoctorById(doctorId) {
+      const doctors = {
+        "1": {name: "Dr. Smith", specialty: "Cardiologist"},
+        "2": {name: "Dr. Johnson", specialty: "Dermatologist"}
+      };
+      return doctors[doctorId];
+    }
+
+    function showDoctorDetails(doctor) {
+      document.getElementById("doctor-name").textContent = "Doctor: " + doctor.name;
+      document.getElementById("doctor-specialty").textContent = "Specialty: " + doctor.specialty;
+    }
+
+    function showAppointmentConfirmation(patientName, appointmentDate, appointmentTime) {
+      const confirmationDiv = document.getElementById("appointment-confirmation");
+      confirmationDiv.style.display = "block";
+      confirmationDiv.innerHTML = `<p>Hi ${patientName}, your appointment on ${appointmentDate} at ${appointmentTime} has been booked successfully!</p>`;
+    }
+  </script>
+</body>
+
+</html>
